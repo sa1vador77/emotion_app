@@ -1,0 +1,128 @@
+# ====================================================================
+# Miscellaneous
+# ====================================================================
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+._*
+.atom/
+.build/
+.buildlog/
+.history
+.svn/
+.swiftpm/
+migrate_working_dir/
+
+# ====================================================================
+# IDE / Editor
+# ====================================================================
+# IntelliJ / Android Studio
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# VS Code — конфиги запуска и задач (раскомментируй, если не нужно делиться)
+#.vscode/
+
+# ====================================================================
+# Flutter / Dart / Pub
+# ====================================================================
+**/doc/api/
+**/ios/Flutter/.last_build_id
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+/build/
+/coverage/
+
+# Symbolication / Obfuscation
+app.*.symbols
+app.*.map.json
+
+# ====================================================================
+# iOS (CocoaPods регенерируется через `pod install`)
+# ====================================================================
+**/Pods/
+**/.symlinks/
+**/xcuserdata/
+**/DerivedData/
+ios/Flutter/App.framework
+ios/Flutter/Flutter.framework
+ios/Flutter/Flutter.podspec
+ios/Flutter/Generated.xcconfig
+ios/Flutter/ephemeral/
+ios/Flutter/flutter_assets/
+ios/Flutter/flutter_export_environment.sh
+ios/Runner/GeneratedPluginRegistrant.*
+ios/ServiceDefinitions.json
+
+# ====================================================================
+# Android
+# ====================================================================
+/android/app/debug
+/android/app/profile
+/android/app/release
+/android/.gradle/
+/android/captures/
+/android/gradlew
+/android/gradlew.bat
+/android/local.properties
+/android/**/GeneratedPluginRegistrant.java
+
+# Подписные ключи и секреты — НИКОГДА не коммитить
+**/android/key.properties
+**/android/app/key.properties
+*.jks
+*.keystore
+!debug.keystore
+
+# ====================================================================
+# macOS / Linux / Windows (если когда-нибудь добавишь)
+# ====================================================================
+**/macos/Flutter/GeneratedPluginRegistrant.swift
+**/macos/Flutter/ephemeral/
+**/linux/flutter/generated_plugin_registrant.*
+**/linux/flutter/generated_plugins.cmake
+**/windows/flutter/generated_plugin_registrant.*
+**/windows/flutter/generated_plugins.cmake
+
+# ====================================================================
+# Секреты и переменные окружения
+# ====================================================================
+.env
+.env.*
+!.env.example
+secrets.json
+credentials.json
+*.pem
+*.p12
+
+# ====================================================================
+# Артефакты сборки и временные файлы
+# ====================================================================
+*.apk
+*.aab
+*.ipa
+*.app
+*.dSYM.zip
+*.dSYM/
+
+# Датасет KDEF
+/kdef/
+# Временные файлы Word/Office
+~$*
+*.bak
+*.tmp
+
+# Материалы ВКР: крупные файлы (видео, презентации) вне репозитория,
+# кроме пояснительной записки и методических указаний
+/doc/*
+!/doc/квкр_финал.docx
+!/doc/МУ_прог.docx
+!/doc/МУ_псих.pdf

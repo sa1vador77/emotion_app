@@ -1,0 +1,70 @@
+name: emotion_app
+description: Игровое приложение для развития навыка распознавания эмоций у школьников с РАС
+
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # Навигация
+  go_router: ^13.0.0
+
+  # Состояние приложения
+  provider: ^6.1.1
+
+  # Локальное хранение прогресса
+  shared_preferences: ^2.2.2
+
+  # Анимации
+  flutter_animate: ^4.5.0
+
+  # Звук
+  audioplayers: ^5.0.0
+
+  # Экспорт файлов (share sheet на iOS)
+  share_plus: ^10.0.0
+  path_provider: ^2.1.0
+
+  # Выбор файла резервной копии при импорте.
+  # Используем file_selector (официальный пакет Flutter team), а не
+  # file_picker — у последнего объявлен ObjC-класс `FileUtils`,
+  # одноимённый с классом из приватного фреймворка Apple
+  # `OSAnalytics`, что даёт runtime-warning «may cause spurious
+  # casting failures» и не пропускается ревью App Store без шума.
+  file_selector: ^1.0.3
+
+  # SHA-256 для хэширования ответа на контрольный вопрос
+  crypto: ^3.0.0
+
+  cupertino_icons: ^1.0.6
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+  flutter_launcher_icons: ^0.14.0
+
+flutter_launcher_icons:
+  ios: true
+  android: false
+  image_path: "assets/icon.png"
+  remove_alpha_ios: true
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/placeholder.png
+    - assets/images/emotions/
+    - assets/images/diagnostic/form_a/
+    - assets/images/diagnostic/form_b/
+    - assets/audio/correct.wav
+    - assets/audio/wrong_soft.wav
+    - assets/audio/bubble_pop.wav
+    - assets/audio/transition.wav
+    - assets/audio/success.wav
