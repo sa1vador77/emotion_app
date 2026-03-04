@@ -1,0 +1,10 @@
+#include? "Pods/Target Support Files/Pods-Runner/Pods-Runner.release.xcconfig"
+// Build config «Profile» в Xcode-проекте использует этот же
+// Release.xcconfig как base configuration. Без следующего include
+// CocoaPods при pod install ругается «base configuration of your
+// project … please … include the Pods-Runner.profile.xcconfig».
+// Pods-Runner.profile.xcconfig побайтово идентичен release-варианту
+// (в Podfile `Profile => :release`), поэтому повторный include в
+// Release-сборке безопасен и не меняет settings.
+#include? "Pods/Target Support Files/Pods-Runner/Pods-Runner.profile.xcconfig"
+#include "Generated.xcconfig"
