@@ -6,15 +6,17 @@ import '../data/tasks_data.dart';
 import '../widgets/common_widgets.dart';
 import 'module_screen_base.dart';
 
-/// Связка «текстовая характеристика бровей + текстовая
-/// характеристика рта» для одной эмоции. Используется как
-/// эталон при проверке ответа в модуле 2.
+/// Связка «текстовая характеристика бровей + глаз + рта»
+/// для одной эмоции. Используется как эталон при проверке
+/// ответа в модуле 2.
 class _EmotionFaceData {
   final String browsLabel;
+  final String eyesLabel;
   final String mouthLabel;
 
   const _EmotionFaceData({
     required this.browsLabel,
+    required this.eyesLabel,
     required this.mouthLabel,
   });
 }
@@ -23,12 +25,12 @@ class _EmotionFaceData {
 /// Используется в [_prepareTask] для определения правильного
 /// варианта и в feedback-баннере для подсказки.
 const Map<String, _EmotionFaceData> _faceData = {
-  'joy':      _EmotionFaceData(browsLabel: 'Приподняты',      mouthLabel: 'Улыбка'),
-  'sadness':  _EmotionFaceData(browsLabel: 'Уголки вниз',     mouthLabel: 'Уголки опущены'),
-  'anger':    _EmotionFaceData(browsLabel: 'Нахмуренные',     mouthLabel: 'Сжатые губы'),
-  'fear':     _EmotionFaceData(browsLabel: 'Высоко подняты',  mouthLabel: 'Открытый рот'),
-  'surprise': _EmotionFaceData(browsLabel: 'Очень высоко',    mouthLabel: 'Широко открыт'),
-  'disgust':  _EmotionFaceData(browsLabel: 'Одна выше',       mouthLabel: 'Нос сморщен'),
+  'joy':      _EmotionFaceData(browsLabel: 'Приподняты',      eyesLabel: 'Прищурены',      mouthLabel: 'Улыбка'),
+  'sadness':  _EmotionFaceData(browsLabel: 'Уголки вниз',     eyesLabel: 'Опущены',        mouthLabel: 'Уголки опущены'),
+  'anger':    _EmotionFaceData(browsLabel: 'Нахмуренные',     eyesLabel: 'Сужены',         mouthLabel: 'Сжатые губы'),
+  'fear':     _EmotionFaceData(browsLabel: 'Высоко подняты',  eyesLabel: 'Широко открыты', mouthLabel: 'Открытый рот'),
+  'surprise': _EmotionFaceData(browsLabel: 'Очень высоко',    eyesLabel: 'Округлены',      mouthLabel: 'Широко открыт'),
+  'disgust':  _EmotionFaceData(browsLabel: 'Одна выше',       eyesLabel: 'Сощурены',       mouthLabel: 'Нос сморщен'),
 };
 
 /// Один текстовый вариант выбора (часть лица).
@@ -56,6 +58,14 @@ const List<_TextOption> _allBrowsPool = [
   _TextOption(id: 'b_fear', label: 'Высоко подняты'),
 ];
 
+/// Пул вариантов для глаз (4 типичных описания).
+const List<_TextOption> _allEyesPool = [
+  _TextOption(id: 'e_joy',  label: 'Прищурены'),
+  _TextOption(id: 'e_sad',  label: 'Опущены'),
+  _TextOption(id: 'e_ang',  label: 'Сужены'),
+  _TextOption(id: 'e_fear', label: 'Широко открыты'),
+];
+
 /// Пул вариантов для рта (4 типичных описания).
 const List<_TextOption> _allMouthPool = [
   _TextOption(id: 'm_joy',  label: 'Улыбка'),
@@ -65,7 +75,7 @@ const List<_TextOption> _allMouthPool = [
 ];
 
 /// Модуль 2 — «Конструктор»: ребёнку называется эмоция,
-/// и нужно выбрать правильные характеристики бровей и рта
+/// и нужно выбрать правильные характеристики бровей, глаз и рта
 /// из двух вариантов в каждой строке.
 ///
 /// Это **аналитический** уровень распознавания: ребёнок не
@@ -88,9 +98,11 @@ class Module2Screen extends StatefulWidget {
 class _Module2ScreenState extends State<Module2Screen>
     with ModuleTaskMixin<Module2Screen> {
   String? _selectedBrowsId;
+  String? _selectedEyesId;
   String? _selectedMouthId;
 
   late List<_TextOption> _browsOptions;
+  late List<_TextOption> _eyesOptions;
   late List<_TextOption> _mouthOptions;
 
   List<Module2Task> get _tasks => module2Tasks;
@@ -117,23 +129,30 @@ class _Module2ScreenState extends State<Module2Screen>
     final fd = _faceData[_currentTask.targetEmotionId]!;
     final correctBrows =
         _TextOption(id: 'correct_brows', label: fd.browsLabel, isCorrect: true);
+    final correctEyes =
+        _TextOption(id: 'correct_eyes', label: fd.eyesLabel, isCorrect: true);
     final correctMouth =
         _TextOption(id: 'correct_mouth', label: fd.mouthLabel, isCorrect: true);
     final wrongBrows =
         _allBrowsPool.where((b) => b.label != fd.browsLabel).take(1).toList();
+    final wrongEyes =
+        _allEyesPool.where((e) => e.label != fd.eyesLabel).take(1).toList();
     final wrongMouths =
         _allMouthPool.where((m) => m.label != fd.mouthLabel).take(1).toList();
     _browsOptions = [correctBrows, ...wrongBrows]..shuffle();
+    _eyesOptions = [correctEyes, ...wrongEyes]..shuffle();
     _mouthOptions = [correctMouth, ...wrongMouths]..shuffle();
     _selectedBrowsId = null;
+    _selectedEyesId = null;
     _selectedMouthId = null;
   }
 
-  /// Ответ правильный, только если обе части выбраны верно.
+  /// Ответ правильный, только если все три части выбраны верно.
   /// Это обучает целостному восприятию: одна правильная часть
   /// не делает лицо эмоцией.
   void _checkAnswer() {
     final correct = _selectedBrowsId == 'correct_brows' &&
+        _selectedEyesId == 'correct_eyes' &&
         _selectedMouthId == 'correct_mouth';
     submitAnswer(
       moduleId: 'module2',
@@ -148,25 +167,26 @@ class _Module2ScreenState extends State<Module2Screen>
   ///
   /// Логика:
   /// 1. На правильном ответе — целевая эмоция (быстрый путь).
-  /// 2. Иначе ищем эмоцию в [_faceData], у которой обе части
+  /// 2. Иначе ищем эмоцию в [_faceData], у которой все три части
   ///    совпадают с выбранными лейблами. Это случай «собрал
   ///    другую целую эмоцию» — самый информативный для педагога.
-  /// 3. Если такой нет (брови от одной эмоции, рот от другой) —
-  ///    fallback на эмоцию по неправильной части. Приоритет:
-  ///    сначала проверяем брови (как первая по порядку часть
-  ///    выбора в UI), потом рот. Это компромисс между
+  /// 3. Если такой нет (части от разных эмоций) — fallback на
+  ///    эмоцию по неправильной части. Приоритет — в порядке частей
+  ///    в UI: брови, затем глаза, затем рот. Это компромисс между
   ///    статистической чистотой и информативностью — без него
-  ///    половина ошибок не попала бы в матрицу.
+  ///    часть ошибок не попала бы в матрицу.
   String _inferSelectedEmotionId(bool correct) {
     if (correct) return _currentTask.targetEmotionId;
 
     final picked = (
       brows: _browsOptions.firstWhere((o) => o.id == _selectedBrowsId).label,
+      eyes: _eyesOptions.firstWhere((o) => o.id == _selectedEyesId).label,
       mouth: _mouthOptions.firstWhere((o) => o.id == _selectedMouthId).label,
     );
 
     for (final entry in _faceData.entries) {
       if (entry.value.browsLabel == picked.brows &&
+          entry.value.eyesLabel == picked.eyes &&
           entry.value.mouthLabel == picked.mouth) {
         return entry.key;
       }
@@ -174,6 +194,11 @@ class _Module2ScreenState extends State<Module2Screen>
     if (_selectedBrowsId != 'correct_brows') {
       for (final entry in _faceData.entries) {
         if (entry.value.browsLabel == picked.brows) return entry.key;
+      }
+    }
+    if (_selectedEyesId != 'correct_eyes') {
+      for (final entry in _faceData.entries) {
+        if (entry.value.eyesLabel == picked.eyes) return entry.key;
       }
     }
     for (final entry in _faceData.entries) {
@@ -258,6 +283,15 @@ class _Module2ScreenState extends State<Module2Screen>
                         ),
                         const SizedBox(height: 12),
                         _buildPartRow(
+                          label: '👀 Глаза:',
+                          options: _eyesOptions,
+                          selectedId: _selectedEyesId,
+                          onSelect: answered
+                              ? null
+                              : (id) => setState(() => _selectedEyesId = id),
+                        ),
+                        const SizedBox(height: 12),
+                        _buildPartRow(
                           label: '👄 Рот:',
                           options: _mouthOptions,
                           selectedId: _selectedMouthId,
@@ -277,7 +311,7 @@ class _Module2ScreenState extends State<Module2Screen>
                             isVisible: true,
                             customMessage: isCorrect
                                 ? '✓ Правильно! Вот как выглядит ${emotion.nameRu}!'
-                                : 'Правильно: ${fd.browsLabel} + ${fd.mouthLabel}',
+                                : 'Правильно: ${fd.browsLabel} + ${fd.eyesLabel} + ${fd.mouthLabel}',
                           ),
                           const SizedBox(height: 10),
                           EmotionInfoCard(emotion: emotion),
@@ -297,6 +331,7 @@ class _Module2ScreenState extends State<Module2Screen>
                             width: double.infinity,
                             child: ElevatedButton(
                               onPressed: (_selectedBrowsId != null &&
+                                      _selectedEyesId != null &&
                                       _selectedMouthId != null)
                                   ? _checkAnswer
                                   : null,
