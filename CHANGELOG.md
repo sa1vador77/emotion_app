@@ -29,5 +29,5 @@
 - Сенсорно-безопасная палитра и адаптивная вёрстка по классам размеров окна Material 3.
 - Полностью офлайн-работа без сервера, аккаунтов и подключения к сети.
 
-[Unreleased]: https://github.com/sa1vador77/emotion_app/compare/v1.0.0...HEAD
-[1.0.0]: https://github.com/sa1vador77/emotion_app/releases/tag/v1.0.0
+[Unreleased]: https://github.com/sa1vador77/emotion-app/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/sa1vador77/emotion-app/releases/tag/v1.0.0

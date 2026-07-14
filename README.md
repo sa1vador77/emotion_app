@@ -5,7 +5,7 @@
 
   **Игровое мобильное приложение для развития навыка распознавания базовых эмоций у школьников с расстройством аутистического спектра**
 
-  [![CI](https://github.com/sa1vador77/emotion_app/actions/workflows/ci.yml/badge.svg)](https://github.com/sa1vador77/emotion_app/actions/workflows/ci.yml)
+  [![CI](https://github.com/sa1vador77/emotion-app/actions/workflows/ci.yml/badge.svg)](https://github.com/sa1vador77/emotion-app/actions/workflows/ci.yml)
   ![Flutter](https://img.shields.io/badge/Flutter-3.x-02569B?logo=flutter&logoColor=white)
   ![Dart](https://img.shields.io/badge/Dart-%3E%3D3.0.0-0175C2?logo=dart&logoColor=white)
   ![Platform](https://img.shields.io/badge/platform-iOS%20%7C%20Android-lightgrey)
@@ -102,8 +102,8 @@
 
 ```bash
 # Клонировать репозиторий
-git clone https://github.com/sa1vador77/emotion_app.git
-cd emotion_app
+git clone https://github.com/sa1vador77/emotion-app.git
+cd emotion-app
 
 # Установить зависимости
 flutter pub get
