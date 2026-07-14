@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  analyze-and-test:
+    name: Статический анализ и юнит-тесты
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Установка Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          # Версия зафиксирована — результаты CI совпадают с локальной средой разработки
+          flutter-version: 3.41.9
+          cache: true
+
+      - name: Зависимости
+        run: flutter pub get
+
+      - name: Статический анализ (политика нулевых предупреждений)
+        run: flutter analyze
+
+      - name: Юнит-тесты
+        run: flutter test
